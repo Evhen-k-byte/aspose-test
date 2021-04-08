@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <title>Default Bootstrap</title>
+   //= partials/head.html
+</head>
+
+<body>
+
+   //= partials/header.html
+
+   <main>
+
+      <div class="container">
+         <section id="app" class="converter">
+            <h1 class="converter__title d-flex">
+    
+                  <span :class="{ opacityIn: !isFadeIn,  opacityO: isFadeIn}">{{converterName}}</span>
+ 
+               <div id="appToggler" class="converter__arr">
+                  <svg class="icon">
+                     <use xlink:href="#up-arrow"></use>
+                  </svg>
+               </div>
+            </h1>
+
+            <div class="converter__apps">
+               <div id="appWrap" class="apps row d-none animation-fadeOut">
+
+                  <div class="apps__item col" @click="filter('Конвертор PDF')">
+                     <div class="apps__img">
+                        <svg class="icon">
+                           <use xlink:href="#file"></use>
+                        </svg>
+                     </div>
+                     <h3 class="apps__title">
+                        Конвертор PDF
+                     </h3>
+                  </div>
+
+                  <div class="apps__item col" @click="filter('Парсер PDF')">
+                     <div class="apps__img">
+                        <svg class="icon">
+                           <use xlink:href="#analysis"></use>
+                        </svg>
+                     </div>
+                     <h3 class="apps__title">
+                        Парсер PDF
+                     </h3>
+                  </div>
+
+                  <div class="apps__item col" @click="filter('Сжатие PDF')">
+                     <div class="apps__img">
+                        <svg class="icon">
+                           <use xlink:href="#compress"></use>
+                        </svg>
+                     </div>
+                     <h3 class="apps__title">
+                        Сжатие PDF
+                     </h3>
+                  </div>
+
+                  <div class="apps__item col" @click="filter('Удаление страниц')">
+                     <div class="apps__img">
+                        <svg class="icon">
+                           <use xlink:href="#delete"></use>
+                        </svg>
+                     </div>
+                     <h3 class="apps__title">
+                        Удаление страниц
+                     </h3>
+                  </div>
+
+                  <div class="apps__item col" @click="filter('Редактирование PDF')">
+                     <div class="apps__img">
+                        <svg class="icon">
+                           <use xlink:href="#edit-button"></use>
+                        </svg>
+                     </div>
+                     <h3 class="apps__title">
+                        Редактирование PDF
+                     </h3>
+                  </div>
+
+                  <div class="apps__item col" @click="filter('Разделение PDF')">
+                     <div class="apps__img">
+                        <svg class="icon" >
+                           <use xlink:href="#resize"></use>
+                        </svg>
+                     </div>
+                     <h3 class="apps__title">
+                        Разделение PDF
+                     </h3>
+                  </div>
+
+                  <div class="apps__item col" @click="filter('Объединение PDF')">
+                     <div class="apps__img">
+                        <svg class="icon">
+                           <use xlink:href="#merge"></use>
+                        </svg>
+                     </div>
+                     <h3 class="apps__title">
+                        Объединение PDF
+                     </h3>
+                  </div>
+
+               </div>
+            </div>
+
+            <div class="converter__subtitle">
+              <span class="d-block opacityO"
+              :class="{ opacityIn: !isFadeIn,  opacityO: isFadeIn}"
+              >
+              {{converterDescription}}
+            </span>
+            </div>
+
+            <div class="converter__field">
+               <div class="field">
+
+                  <div class="field__icon"
+                  :class="{ opacityIn: !isFadeIn,  opacityO: isFadeIn}"
+                  >
+                     <svg class="icon">
+                        <use v-bind:href="converterIcon"></use>
+                     </svg>
+                  </div>
+
+                  <button class="field__btn">
+                     Выбрать файл
+                  </button>
+
+                  <div class="field__text">
+                     <span>или перетащите файлы сюда</span>
+                     <svg id="rulesToggler" class="field__star animation-sway">
+                        <use xlink:href="#star"></use>
+                     </svg>
+
+                  </div>
+               </div>
+
+               <div id="rules" class="converter__rules d-none">
+                  <span> Загружая файлы или используя нашу службу, вы соглашаетесь с </span><a
+                     href="https://about.aspose.app/legal/tos" rel="nofollow noreferrer" target="_ blank"> Условиями
+                     использования </a> <span> и </span> <a href="https://about.aspose.app/legal/privacy-policy"
+                     rel="nofollow noreferrer" target="_blank">Политикой конфиденциальности</a>
+               </div>
+            </div>
+
+            <div class="converter__options">
+               <div class="options row">
+                  <div class="options__wrap row"
+                  :class="{ optionsWrapBig: isBigInp}"
+                  >
+                     <transition name="fade">
+                        <div v-if="converterBtn === 'converter'" class="options__format d-flex">
+                           <span>Формат: </span>
+                           <select class="form-select form-select-lg text-uppercase">
+                              <option selected value="1">DOC</option>
+                              <option value="1">JPG</option>
+                              <option value="2">XMl</option>
+                              <option value="3">TXt</option>
+                           </select>
+                        </div>
+                     </transition>
+
+                     <transition name="fade">
+                        <div v-if="converterBtn === 'resize'" class="options__format d-flex">
+                           <span>Разделить: </span>
+                           <select class="form-select text-uppercase">
+                              <option value="1" selected>на отдельные страницы</option>
+                              <option value="2">четные/нечетные страницы</option>
+                              <option value="3">на отдельные файлы</option>
+                           </select>
+                        </div>
+                     </transition>
+
+                     <transition name="fade">
+                        <div v-if="converterBtn === 'compress'" class="options__format d-flex">
+                           <span>Качество: </span>
+                           <select class="form-select form-select-lg text-uppercase">
+                              <option value="1">низкое</option>
+                              <option selected value="2">среднее</option>
+                              <option value="3">высокое</option>
+                           </select>
+                        </div>
+                     </transition>
+
+                     <transition name="fade">
+                        <div v-if="converterBtn === 'delete'" class="options__format options__format--input">
+                           <label for="page-number" class="form-label d-inline">Страницы: </label>
+                           <input type="text" placeholder="1,2,4..." class="form-control d-inline" id="page-number">
+                        </div>
+                     </transition>
+                  </div>
+
+                  <div id="share-btn" class="options__share" title="Поделиться">
+                     <svg class="icon">
+                        <use xlink:href="#share"></use>
+                     </svg>
+                  </div>
+
+                  <div class="options__add" title="Добавить в закладки">
+                     <svg class="icon">
+                        <use xlink:href="#bookmark-white"></use>
+                     </svg>
+                  </div>
+
+               </div>
+
+               <div id="social" class="social d-none">
+                  <div class="social__title">
+                     Поделиться
+                  </div>
+                  <div class="social__link" title="Поделиться в Linkedin">
+                     <a href="#" target="_blank">
+                        <svg class="icon">
+                           <use xlink:href="#linkedin"></use>
+                        </svg>
+                     </a>
+                  </div>
+
+                  <div class="social__link" title="Поделиться в Facebook">
+                     <a href="#" target="_blank">
+                        <svg class="icon">
+                           <use xlink:href="#facebook"></use>
+                        </svg>
+                     </a>
+                  </div>
+
+                  <div class="social__link" title="Поделиться в Twitter">
+                     <a href="#" target="_blank">
+                        <svg class="icon">
+                           <use xlink:href="#twitter"></use>
+                        </svg>
+                     </a>
+                  </div>
+               </div>
+
+            </div>
+
+            <div class="container__how-to">
+               <div class="how-to">
+
+                  <div class="row">
+                     <div class="col how-to__step">
+                        <div class="how-to__img">
+                           <svg class="icon">
+                              <use xlink:href="#pdf-file"></use>
+                           </svg>
+                        </div>
+                        Выберите или перетащите PDF файл, который необходимо конвертировать.
+                     </div>
+
+                     <div class="col how-to__step">
+                        <div class="how-to__img">
+                           <svg class="icon">
+                              <use xlink:href="#clock"></use>
+                           </svg>
+                        </div>
+                        Конвертирование Вашего PDF файла займет буквально несколько секунд.
+                     </div>
+
+                     <div class="col how-to__step">
+                        <div class="how-to__img">
+                           <svg class="icon">
+                              <use xlink:href="#floppy-disk"></use>
+                           </svg>
+                        </div>
+                        Документ готов к загрузке.
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+         </section>
+
+         <section class="our-advantages">
+            <h2 class="our-advantages__title">
+               Наши преимущества
+            </h2>
+
+            <div class="our-advantages__wpap row">
+
+               <div class="advantage col-4">
+                  <div class="advantage__tile">
+                     <div class="advantage__img">
+                        <svg class="icon">
+                           <use xlink:href="#easy-to-use"></use>
+                        </svg>
+                     </div>
+                     <h4>Простота использования</h4>
+                  </div>
+
+
+                  <div class="advantage__description">
+                     Простой путь для одновременной конвертации нескольких PDF файлов
+                  </div>
+               </div>
+
+               <div class="advantage col-4">
+                  <div class="advantage__tile">
+                     <div class="advantage__img">
+                        <svg class="icon">
+                           <use xlink:href="#array"></use>
+                        </svg>
+                     </div>
+                     <h4>Универсальный комбайн</h4>
+                  </div>
+
+
+                  <div class="advantage__description">
+                     Возможность сохранения в одном из найболее распространенных форматов,
+                     а исходный файл может весить до 10Мб
+                  </div>
+               </div>
+
+               <div class="advantage col-4">
+                  <div class="advantage__tile">
+                     <div class="advantage__img">
+                        <svg class="icon">
+                           <use xlink:href="#website"></use>
+                        </svg>
+                     </div>
+
+                     <h4>Многозадачность</h4>
+                  </div>
+
+
+                  <div class="advantage__description">
+                     Количество файлов для одновременной конвертации - до 10
+                  </div>
+               </div>
+
+               <div class="advantage col-4">
+                  <div class="advantage__tile">
+                     <div class="advantage__img advantage__img--wide">
+                        <svg class="icon">
+                           <use xlink:href="#ecosystem"></use>
+                        </svg>
+                     </div>
+                     <h4>Одно решение для многих задач</h4>
+                  </div>
+
+                  <div class="advantage__description">
+                     Попробуйте другие наши конвертеры:
+                     <a rel="nofollow" href="/pdf/ru/conversion/pdf">PDF</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/doc">DOC</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/docx">Word</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/epub">EPUB</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/tex">LaTeX</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/ps">PostScript</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/eps">EPS</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/mhtml">MHTML</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/mht">MHT</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/pcl">PCL</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/md">Markdown</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/txt">Text</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/svg">SVG</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/srt">SRT</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/xml">XML</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/zip">ZIP</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/rar">RAR</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/7z">7z</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/tar">TAR</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/gz">GZ</a>
+                     <a rel="nofollow" href="/pdf/ru/conversion/bz2">BZ2</a>
+                  </div>
+               </div>
+
+               <div class="advantage col-4">
+                  <div class="advantage__tile">
+                     <div class="advantage__img">
+                        <svg class="icon">
+                           <use xlink:href="#api"></use>
+                        </svg>
+                     </div>
+                     <h4>Cloud Api</h4>
+                  </div>
+
+
+                  <div class="advantage__description">
+                     <a href="https://products.aspose.cloud/pdf/family">Cloud SDKs & REST APIs</a>
+                     для создания и преобразования PDF файлов
+                  </div>
+               </div>
+
+               <div class="advantage col-4">
+                  <div class="advantage__tile">
+                     <div class="advantage__img">
+                        <svg class="icon">
+                           <use xlink:href="#verified"></use>
+                        </svg>
+                     </div>
+                     <h4>Безопасность</h4>
+                  </div>
+
+
+                  <div class="advantage__description">
+                     Все данные зашифрованы, а итоговые файлы будут полностью удалены с нашего сервера через 24 часа
+                  </div>
+               </div>
+
+               <div class="advantage col d-block">
+                  <div class="advantage__tile">
+                     <div class="advantage__img">
+                        <svg class="icon">
+                           <use xlink:href="#youtube"></use>
+                        </svg>
+                     </div>
+                     <h4>
+                        Видеоинструкция
+                     </h4>
+                  </div>
+
+                  <div class="advantage__description advantage__description--big">
+                     <iframe width="70%" height="100%" src="https://www.youtube.com/embed/Hcw7ZPUxIP8"
+                        srcdoc="<style>*{padding:0;margin:0;overflow:hidden}
+                  html,body{height:100%}
+                  img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto}
+                  span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black}
+                  </style>
+                        <a href=https://www.youtube.com/embed/Hcw7ZPUxIP8?autoplay=1>
+                           <img src='data:image/png;base64,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' alt='PDF конвертер' /><span>►</span></a>"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen="" title="PDF конвертер">
+                     </iframe>
+
+
+                  </div>
+               </div>
+
+            </div>
+
+         </section>
+      </div>
+
+   </main>
+
+   //= partials/footer.html
+   //= partials/foot.html
+
+</body>
+
+</html>
