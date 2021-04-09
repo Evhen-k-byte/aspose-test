@@ -58,15 +58,10 @@ const App = {
       ],
     };
   },
-  beforeCreate() {
-    console.log("beforeCreated");
-  },
-  created() {
-    console.log("Created");
-  },
+  beforeCreate() {},
+  created() {},
   computed: {},
   mounted() {
-    console.log("mounted");
     this.choicedConverter = this.converterName;
   },
   computed: {},
